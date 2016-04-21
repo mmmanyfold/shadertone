@@ -5,6 +5,18 @@
   (:require [shadertone.tone :as t])
   (:gen-class))
 
+; Depending on your audio setup (external interfaces, etc...) you might need
+; to try a couple different buses before finding what you are looking for.
+; Start at index zero and go upward.
+(definst external
+         []
+         (sound-in 0))
+
+; Start routing the external input to the mixer
+(external)
+
+;;(def lowpass (inst-fx! external fx-rlpf))
+
 ;; See examples/00demo_intro_tour.clj for the example code that was
 ;; once here.
 
@@ -31,16 +43,23 @@
                 _ (tap "t0" 60 (a2k (lag t  0.5)))]
             (* t 999))))) 3e3))))
 
+;;(inst-fx! external red-frik-329311535723839489)
+;;(inst-fx! external fx-reverb)
+
+;; for the repl
+;;(def lowpass (inst-fx! external fx-rlpf))
+
 (defn -main [& args]
-  (let [rf (red-frik-329311535723839489)]
+  (let [;;rf (red-frik-329311535723839489)
+       ]
     (t/start "examples/redFrik.glsl"
-             :width 1280 :height 720
-             :user-data {"t0" (atom {:synth rf :tap "t0"})})
+             :width 640 :height 360
+             :user-data {"t0" (atom {:synth nil :tap "t0"})})
     (println "Playing a 60 second demo inspired by")
     (println "https://twitter.com/redFrik/status/329311535723839489\nEnjoy...")
-    (Thread/sleep (* 60 1000))
+    (Thread/sleep (* 1000 1000))
     (println "Done.")
-    (ctl rf :gate 0) ;; fade out
+    ;;(ctl rf :gate 0) ;; fade out
     (Thread/sleep (* 3 1000))
     (t/stop)
     (stop)
