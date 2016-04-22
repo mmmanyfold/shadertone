@@ -1,6 +1,4 @@
-(ns #^{:author "Roger Allen"
-       :doc    "Shadertoy meets Overtone.  A demonstration for 'lein run'"}
-shadertone.core
+(ns shadertone.core
   (:use [overtone.live])
   (:require [shadertone.tone :as t])
   (:gen-class))
@@ -24,13 +22,25 @@ shadertone.core
 ;; for the repl
 ;;(def lowpass (inst-fx! external fx-rlpf))
 
+
+(defn refresh!
+  "from the repl we can use this function to swap shaders on the fly
+  with no arguments it plays default shader
+  usage $ (refresh! disco)
+  no .glsl extension needed or directory, as you can see below it add
+  it to the name."
+  ([]
+   (t/start "examples/sine_dance.glsl"
+            :width 640 :height 360
+            :user-data {"t0" (atom {:synth nil :tap "t0"})}))
+  ([shader]
+   (t/start (str "examples/" shader ".glsl")
+            :width 640 :height 360
+            :user-data {"t0" (atom {:synth nil :tap "t0"})})))
+
 (defn -main [& args]
   (let []
-    (t/start "examples/sine_dance.glsl"
-             :width 640 :height 360
-             :user-data {"t0" (atom {:synth nil :tap "t0"})})
-    (println "Playing a 60 second demo inspired by")
-    (println "https://twitter.com/redFrik/status/329311535723839489\nEnjoy...")
+    (refresh!)
     (Thread/sleep (* 55 60 1000))
     (println "Done.")
     ;;(ctl rf :gate 0) ;; fade out
