@@ -4,11 +4,19 @@
 uniform float iOvertoneVolume;
 void main(void)
 {
-    vec2 uv = 2.0*(gl_FragCoord.xy/iResolution.xy) - 1.0;
+    vec2 uv =  2.0*(gl_FragCoord.yx/iResolution.yx) - 1.0;
+    vec2 uv2 = 2.0*(gl_FragCoord.yx/iResolution.yx) - 1.0;
+    vec2 uv3 = 2.0*(gl_FragCoord.yx/iResolution.yx) - 1.0;
     // equvalent to the video's spec.y, I think
-    float spec_y = 0.01 + 5.0*iOvertoneVolume;
-    float col = 0.0;
-    uv.x += sin(iGlobalTime * 6.0 + uv.y*1.5)*spec_y;
-    col += abs(0.066/uv.x) * spec_y;
-    gl_FragColor = vec4(col,col,col,1.0);
+    float spec_y = 0.21 + 10.0*iOvertoneVolume;
+    float col = 0.33;
+    float col2 = 0.255;
+    float col3 = 0.055;
+    uv.x += sin(iGlobalTime * 1.0 + uv.y*1.5)*spec_y;
+    uv2.x += sin(iGlobalTime * -1.0 + uv.y*1.5)*spec_y;
+    uv3.x += sin(iGlobalTime * 1.0 + uv.y*1.5)*spec_y;
+    col += abs(0.16/uv.x) * spec_y;
+    col2 += abs(0.16/uv2.x) * spec_y;
+    col3 += abs(0.16/uv3.x) * spec_y;
+    gl_FragColor = vec4(col,col2,col3,0.10);
 }

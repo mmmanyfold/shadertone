@@ -1,7 +1,7 @@
-patron =  [1,1,1,2,2,2]
-patron2 = [1,1,1,1,1,2]
+patron =  [1,1,2,2]
+patron2 = [1,1,1,2,2]
 
-use_bpm 60
+use_bpm 25
 
 notes0 = (ring :E4, :Fs4, :B4, :Cs5, :D5, :Fs4, :E4, :Cs5, :B4, :Fs4, :D5, :Cs5)
 notes1 = (scale :E4, :chromatic)
@@ -32,9 +32,9 @@ live_loop :forlove do
 end
 
 live_loop :ofbooks do
-  with_fx(:reverb, release: 2.2,  phase: 1.125, distort: 8) do
+  with_fx(:reverb, release: 2.2,  phase: 1.125, distort: 2) do
     patron.each do |p|
-      use_synth :dark_ambience
+      use_synth  :mod_beep
       cg = play (chord :e2, '11+'), release: 1.4, amp: 5 if p == 1
       control cg, note: (chord :c3, :major)
       with_fx( :ixi_techno, release: 1.2, reps: 2) do
