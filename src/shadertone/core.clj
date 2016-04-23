@@ -26,11 +26,11 @@
   it to the name."
   ([]
    (t/start "examples/0.glsl"
-            :width 1280 :height 720
+            :width 1440 :height 900
             :user-data {"t0" (atom {:synth nil :tap "t0"})}))
   ([shader]
    (t/start (str "examples/" shader ".glsl")
-            :width 1280 :height 720
+            :width 1440 :height 900
             :user-data {"t0" (atom {:synth nil :tap "t0"})})))
 
 
