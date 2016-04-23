@@ -25,12 +25,12 @@
   no .glsl extension needed or directory, as you can see below it add
   it to the name."
   ([]
-   (t/start "examples/sine_dance.glsl"
-            :width 640 :height 360
+   (t/start "examples/0.glsl"
+            :width 1280 :height 720
             :user-data {"t0" (atom {:synth nil :tap "t0"})}))
   ([shader]
    (t/start (str "examples/" shader ".glsl")
-            :width 640 :height 360
+            :width 1280 :height 720
             :user-data {"t0" (atom {:synth nil :tap "t0"})})))
 
 
@@ -40,9 +40,21 @@
               (when (= (:name (:device e)) "Launchpad")
                 (let [note (:note e)
                       vel  (:velocity e)]
+                  (println note)
                   (case note
-                    0 (refresh! "disco")
-                    1 (refresh! "redFrik")
+                    0 (refresh! "0")
+                    1 (refresh! "1")
+                    2 (refresh! "2")
+                    3 (refresh! "3")
+                    4 (refresh! "4")
+                    5 (refresh! "5")
+                    6 (refresh! "6")
+                    7 (refresh! "7")
+                    16 (refresh! "8")
+                    17 (refresh! "9")
+                    18 (refresh! "10")
+                    19 (refresh! "11")
+                    20 (refresh! "12")
                     (refresh!)))))
             ::keyboard-handler))
 
