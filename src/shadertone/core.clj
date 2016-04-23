@@ -12,11 +12,6 @@
 ; Start routing the external input to the mixer
 (external)
 
-;;(def lowpass (inst-fx! external fx-rlpf))
-
-;; See examples/00demo_intro_tour.clj for the example code that was
-;; once here.
-
 (inst-fx! external fx-reverb)
 
 ;; for the repl
@@ -37,6 +32,21 @@
    (t/start (str "examples/" shader ".glsl")
             :width 640 :height 360
             :user-data {"t0" (atom {:synth nil :tap "t0"})})))
+
+
+(defn midi-listen []
+  (on-event [:midi :note-on]
+            (fn [e]
+              (when (= (:name (:device e)) "Launchpad")
+                (let [note (:note e)
+                      vel  (:velocity e)]
+                  (case note
+                    0 (refresh! "disco")
+                    1 (refresh! "redFrik")
+                    (refresh!)))))
+            ::keyboard-handler))
+
+(midi-listen)
 
 (defn -main [& args]
   (let []
