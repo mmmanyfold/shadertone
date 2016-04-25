@@ -16,13 +16,13 @@ void main(void)
     // 3 dancing magenta, cyan & yellow sine waves
 
       // * GO WIDER: v1 = up
-    float v1 = 0.5 + 15.0*iOvertoneVolume;
-    float v2 = 0.1 + 0.5*hz(800);
+    float v1 = 0.9 + 15.0*iOvertoneVolume;
+    float v2 = 1 + 0.5*hz(800);
     float v3 = 0.1 + 0.5*hz(8000);
     vec3 col = vec3(0.0, 0.0, 0.0);
 
       // * GO FASTER: sin(up)
-    float v1x = uv.x + sin(5.0*iGlobalTime + 1.5*uv.y)*v1;
+    float v1x = uv.x + sin(1.0*iGlobalTime + 1.5*uv.y)*v1;
     float v2x = uv.x + 0.5 + sin(3.0*iGlobalTime + 0.8*uv.y)*v1;
     float v3x = uv.x - 0.5 + sin(7.0*iGlobalTime + 3.2*uv.y)*v1;
     col += vec3(1.0,0.0,1.0) * abs(0.066/v1x) * v1;

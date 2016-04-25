@@ -39,7 +39,7 @@
      (t/start (str "examples/" shader ".glsl")
               :width 1440 :height 900
               :user-data {"t0" (atom {:synth nil :tap "t0"})})
-     (send-shell-cmd shader))))
+     (send-shell-cmd (str (+ (read-string shader) 1))))))
 
 
 (defn midi-listen []
