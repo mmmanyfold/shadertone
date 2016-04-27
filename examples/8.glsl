@@ -1,22 +1,18 @@
-// Doodle based on Sound Visualizer https://www.shadertoy.com/view/Xds3Rr
-// and http://vimeo.com/51993089 @ the 0min 44s mark
-// For Shadertone, tap into Overtone's volume...
-uniform float iOvertoneVolume;
+float smoothbump(float center, float width, float x) {
+  float w2 = width/2.0;
+  float cp = center+w2;
+  float cm = center-w2;
+  float c = smoothstep(cm, center, x) * (1.0-smoothstep(center, cp, x));
+  return c;
+}
+
 void main(void)
 {
-    vec2 uv =  2.0*(gl_FragCoord.yx/iResolution.yx) - 1.0;
-    vec2 uv2 = 2.0*(gl_FragCoord.yx/iResolution.yx) - 1.0;
-    vec2 uv3 = 2.0*(gl_FragCoord.yx/iResolution.yx) - 1.0;
-    // equvalent to the video's spec.y, I think
-    float spec_y = 0.21 + 10.0*iOvertoneVolume;
-    float col = 0.33;
-    float col2 = 0.255;
-    float col3 = 0.055;
-    uv.x += sin(iGlobalTime * 1.0 + uv.y*1.5)*spec_y;
-    uv2.x += sin(iGlobalTime * -1.0 + uv.y*1.5)*spec_y;
-    uv3.x += sin(iGlobalTime * 1.0 + uv.y*1.5)*spec_y;
-    col += abs(0.16/uv.x) * spec_y;
-    col2 += abs(0.16/uv2.x) * spec_y;
-    col3 += abs(0.16/uv3.x) * spec_y;
-    gl_FragColor = vec4(col,col2,col3,0.10);
+    vec2  uv     = gl_FragCoord.xy/iResolution.xy;
+    uv.y         = 1.0 - uv.y; // +Y is now "up"
+    float freq   = 0.25*texture2D(iChannel0,vec2(uv.x,0.25)).x;
+    float wave   = texture2D(iChannel0,vec2(uv.x,0.75)).x;
+    float freqc  = smoothstep(0.0,(1.0/iResolution.y), freq + uv.y - 0.9);
+    float wavec  = smoothbump(0.0,(4.0/iResolution.y), wave + uv.y - 0.5);
+    gl_FragColor = vec4(freqc, wavec, 0.25,1.0);
 }

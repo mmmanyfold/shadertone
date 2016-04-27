@@ -6,23 +6,23 @@ float smoothbump(float center, float width, float x) {
   return c;
 }
 
+vec3 hsv2rgb(float h,float s,float v) {
+  return mix(vec3(1.),clamp((abs(fract(h+vec3(3.,2.,1.)/3.)*6.-3.)-1.),0.,1.),s)*v;
+}
+
 void main(void)
 {
-    float deltay = 0.02;
-
+    // draw a colorful waveform
     vec2  uv     = gl_FragCoord.xy/iResolution.xy;
-    float u      = (uv.x-0.35)/5;
-    float wave   = -0.6*abs(texture2D(iChannel0,vec2(u,0.75)).x);
-    float inside = smoothbump(0.5, 0.5,uv.x);
-    wave         = wave*inside;
-    float line   = smoothbump(0.0,(9.0/iResolution.y), wave + uv.y - deltay);
-    vec3  lcolor = line*vec3(0.9,0.9,0.9);
-    float mask   = smoothstep(0.0, (9.0/iResolution.y)/2.0, wave + uv.y - deltay);
+    float wave   = texture2D(iChannel0,vec2(uv.x,0.75)).x;
+    wave         = smoothbump(0.0,(6.0/iResolution.y), wave + uv.y - 0.5);
+    vec3  wc     = wave*hsv2rgb(fract(iGlobalTime/2.0),0.9,0.9);
 
-    // scroll the previous frame
-    vec2  uv2    = uv-vec2(0.0,deltay);
-    vec3  pcolor = 1.0*texture2D(iChannel1,uv2).rgb;
+    // zoom into the previous frame
+    float zf     = -0.05;
+    vec2  uv2    = (1.0+zf)*uv-(zf/2.0,zf/2.0);
+    vec3  pc     = 0.95*texture2D(iChannel1,uv2).rgb;
 
-    // mix the two, masking out lower part of wave
-    gl_FragColor = vec4(mix(lcolor,pcolor,mask),1.0);
+    // mix the two
+    gl_FragColor = vec4(vec3(wc+pc),1.0);
 }

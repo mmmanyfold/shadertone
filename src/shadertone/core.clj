@@ -33,14 +33,18 @@
      (t/start "examples/0.glsl"
               :width 1440 :height 900
               :user-data {"t0" (atom {:synth nil :tap "t0"})})
-     (send-shell-cmd 0)))
+     (send-shell-cmd 1)))
   ([shader]
    (let []
      (t/start (str "examples/" shader ".glsl")
               :width 1440 :height 900
               :user-data {"t0" (atom {:synth nil :tap "t0"})})
-     (send-shell-cmd (str (+ (read-string shader) 1))))))
+     (if (= shader "9") (send-shell-cmd 0) (send-shell-cmd (str (+ (read-string shader) 1)))))))
 
+(defn unglitch! []
+  (let [cmd (format "tell application \"System Events\" to keystroke {tab} using {command down}")]
+    (sh "osascript" "-e" cmd)
+    (sh "osascript" "-e" cmd)))
 
 (defn midi-listen []
   (on-event [:midi :note-on]
@@ -58,11 +62,9 @@
                     5 (refresh! "5")
                     6 (refresh! "6")
                     7 (refresh! "7")
+                    8 (unglitch!)
                     16 (refresh! "8")
                     17 (refresh! "9")
-                    18 (refresh! "10")
-                    19 (refresh! "11")
-                    20 (refresh! "12")
                     (refresh!)))))
             ::keyboard-handler))
 

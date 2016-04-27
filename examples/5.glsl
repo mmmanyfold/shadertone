@@ -1,11 +1,16 @@
-// Displays a constant color.  See 00demo_intro_tour.clj for explanation.
-// iOvertoneVolume is a user-data atom that is added implicitly by tone.clj
-uniform float iOvertoneVolume;
-// iRGB is added by the example code in 00demo_intro_tour.clj
-uniform vec3 iRGB;
+// The shadertoy uniform variables are available by default.
 
-void main(void)
-{
-    vec3 c = iRGB + 5*vec3(iOvertoneVolume);
-    gl_FragColor = vec4(c, 1.0);
+// It is necessary to add the Overtone vars.
+uniform float iOvertoneVolume;
+
+void main(void) {
+  vec2 uv = (gl_FragCoord.xy / iResolution.xy);
+  // find the center and use distance from the center to vary the
+  // green component
+  vec2 uv2 = uv - 0.5;
+  float r = sqrt(uv2.x*uv2.x + uv2.y*uv2.y);
+  gl_FragColor = vec4(uv.x,
+                      20.0*iOvertoneVolume*(1-r),
+                      0.5*sin(3.0*iGlobalTime)+0.5,
+                      1.0);
 }
