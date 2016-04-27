@@ -42,7 +42,7 @@
      (if (= shader "9") (send-shell-cmd 0) (send-shell-cmd (str (+ (read-string shader) 1)))))))
 
 (defn unglitch! []
-  (let [cmd (format "tell application \"System Events\" to keystroke {tab} using {command down}")]
+  (let [cmd "tell application \"System Events\" to keystroke {tab} using {command down}"]
     (sh "osascript" "-e" cmd)
     (sh "osascript" "-e" cmd)))
 
