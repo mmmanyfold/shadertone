@@ -10,5 +10,5 @@ void main(void)
     float col = 0.0;
     uv.x += sin(iGlobalTime * 6.0 + uv.y*1.5)*spec_y;
     col += abs(0.066/uv.x) * spec_y;
-    gl_FragColor = vec4(col,col,col,1.0);
+    gl_FragColor = vec4(col,0.5,0.9,1.0);
 }

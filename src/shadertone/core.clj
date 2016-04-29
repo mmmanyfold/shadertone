@@ -39,7 +39,8 @@
      (t/start (str "examples/" shader ".glsl")
               :width 1440 :height 900
               :user-data {"t0" (atom {:synth nil :tap "t0"})})
-     (if (= shader "9") (send-shell-cmd 0) (send-shell-cmd (str (+ (read-string shader) 1)))))))
+     (if (= shader "9") (send-shell-cmd 0) (send-shell-cmd (str (+ (read-string shader) 1))))
+     )))
 
 (defn unglitch! []
   (let [cmd "tell application \"System Events\" to keystroke {tab} using {command down}"]
@@ -53,6 +54,7 @@
                 (let [note (:note e)
                       vel  (:velocity e)]
                   (println note)
+                  (Thread/sleep 1000)
                   (case note
                     0 (refresh! "0")
                     1 (refresh! "1")
