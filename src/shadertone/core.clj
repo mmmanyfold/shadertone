@@ -31,13 +31,13 @@
   ([]
    (let []
      (t/start "examples/0.glsl"
-              :width 1440 :height 900
+              :width (/ 1440 1.5) :height 900
               :user-data {"t0" (atom {:synth nil :tap "t0"})})
      (send-shell-cmd 1)))
   ([shader]
    (let []
      (t/start (str "examples/" shader ".glsl")
-              :width 1440 :height 900
+              :width (/ 1440 1.5) :height 900
               :user-data {"t0" (atom {:synth nil :tap "t0"})})
      (if (= shader "9") (send-shell-cmd 0) (send-shell-cmd (str (+ (read-string shader) 1))))
      )))

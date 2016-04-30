@@ -6,7 +6,7 @@ vec2 getScreenUV(vec2 fc) {
     vec2 uv = fc/iResolution.xy;  // uv = [0,1)
     
         // * MORE WIDE uv = down     MORE DENSE uv-down
-    uv = 1.0*uv-0.2;              // uv = [-1,1)
+    uv = 0.5*uv-0.1;              // uv = [-1,1)
     float aspect_ratio = iResolution.x / iResolution.y;
     if(aspect_ratio < 1.0) {
         uv.x /= aspect_ratio;     // u  = [-ar,ar), v = [-1,1)
