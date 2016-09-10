@@ -6,7 +6,7 @@ vec2 getScreenUV(vec2 fc) {
     vec2 uv = fc/iResolution.xy;  // uv = [0,1)
     
         // * MORE WIDE uv = down     MORE DENSE uv-down
-    uv = 0.5*uv-0.1;              // uv = [-1,1)
+    uv = 0.5*uv-0.4;              // uv = [-1,1)
     float aspect_ratio = iResolution.x / iResolution.y;
     if(aspect_ratio < 1.0) {
         uv.x /= aspect_ratio;     // u  = [-ar,ar), v = [-1,1)
@@ -32,13 +32,13 @@ float get_dot(float x, float y, float v) {
 
 void main(void) {
     vec2 uv = getScreenUV(gl_FragCoord.yx);
-    vec3 c1 = get_dot(uv.x, uv.y, v1)*vec3(0.6, 0.1, 0.5);
+    vec3 c1 = get_dot(uv.x, uv.y, v1)*vec3(0.26, 0.5, 0.15);
     vec3 c2 = get_dot(uv.x, uv.y, v2)*vec3(0.5, 0.6, 0.1);
     vec3 c3 = get_dot(uv.x, uv.y, v3)*vec3(0.1, 0.5, 0.6);
 
     vec2 uv2 = (uv+1.0)/2.0;
-    uv2.y += 0.07 + 0.05*sin(iGlobalTime);
-    uv2.x += 0.008*sin(19.0*sin(uv2.y)*mod(iGlobalTime,8.0));
+    uv2.y += 0.07 + 0.05*tan(iGlobalTime);
+    uv2.x += 0.008*sin(19.0*tan(uv2.y)*mod(iGlobalTime,8.0));
     //uv2.x += 0.004*noise1(iGlobalTime*3.0);
     vec3 pc = 1.91*texture2D(iChannel0,uv2).rgb;
 

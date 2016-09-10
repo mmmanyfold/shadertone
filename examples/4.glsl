@@ -4,16 +4,16 @@
 uniform float iOvertoneVolume;
 void main(void)
 {
-    // vec2 uv = 3*(gl_FragCoord.xy/iResolution.xy) - 1.5;
-    // vec2 uv2 = 3*(gl_FragCoord.xy/iResolution.xy) - 1.5;
-    // vec2 uv3 = 3*(gl_FragCoord.xy/iResolution.xy) - 1.5;
+    vec2 uv = 3*(gl_FragCoord.xy/iResolution.xy) - 2.0;
+    vec2 uv2 = 3*(gl_FragCoord.xy/iResolution.xy) - 2.0;
+    vec2 uv3 = 3*(gl_FragCoord.xy/iResolution.xy) - 2.0;
 
-    vec2 uv = (0.5 * mod(iGlobalTime, 10))*(gl_FragCoord.xy/iResolution.xy) - 1.0;
-    vec2 uv2 = (0.5 * mod(iGlobalTime, 10))*(gl_FragCoord.xy/iResolution.xy) - 1.0;
-    vec2 uv3 = (0.5 * mod(iGlobalTime, 10))*(gl_FragCoord.xy/iResolution.xy) - 1.0;
+    // vec2 uv = (0.5 * mod(iGlobalTime, 10))*(gl_FragCoord.xy/iResolution.xy) - 1.0;
+    // vec2 uv2 = (0.5 * mod(iGlobalTime, 10))*(gl_FragCoord.xy/iResolution.xy) - 1.0;
+    // vec2 uv3 = (0.5 * mod(iGlobalTime, 10))*(gl_FragCoord.xy/iResolution.xy) - 1.0;
 
     // equvalent to the video's spec.y, I think
-    float spec_y = 0.1 + 5.0*iOvertoneVolume;
+    float spec_y = 0.1 + 25.0*iOvertoneVolume;
 
         // * CHANGE COLOR
 

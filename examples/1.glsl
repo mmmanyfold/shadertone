@@ -26,8 +26,8 @@ void main(void)
 
           // * MORE QUIVER: vec3(up)
 
-        c += (vec3(0.3,0.15*(1.0-act),0.1*(act)) *
-              vec3(min(0.9,pow(r,8.0)*3*iOvertoneVolume)));
+        c += (vec3(0.1,0.15*(1.0-act),0.1*(act)) *
+              vec3(min(0.7,pow(r,8.0)*3*iOvertoneVolume)));
         c += (vec3(-4.0*act,0.0,0.5*act) *
               vec3(max(0.0,4.0*pow(1.5*t0+0.5,0.5)*(1.0-r)-1.6)));
     }

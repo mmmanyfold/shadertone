@@ -4,8 +4,8 @@
 // https://bitbucket.org/rallen/quasicrystalscreensaver/wiki/Home
 
 const float PI = 3.1415926535897931;
-const float ra = 0.0 / 3.0 * 2.0 * PI;
-const float ga = 1.0 / 3.0 * 2.0 * PI;
+const float ra = 0.2 / 5.0 * 2.0 * PI;
+const float ga = 5.0 / 3.0 * 2.0 * PI;
 const float ba = 2.0 / 3.0 * 2.0 * PI;
 
 // all of these can be played with
