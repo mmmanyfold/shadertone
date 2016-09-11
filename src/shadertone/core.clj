@@ -39,8 +39,8 @@
      (t/start (str "examples/" shader ".glsl")
               :width (/ 1440 1.5) :height 900
               :user-data {"t0" (atom {:synth nil :tap "t0"})})
-     (if (= shader "9") (send-shell-cmd 0) (send-shell-cmd (str (+ (read-string shader) 1))))
-     )))
+     (if (= shader "9") (send-shell-cmd 0) (send-shell-cmd (str (+ (read-string shader) 1)))))))
+
 
 (defn unglitch! []
   (let [cmd "tell application \"System Events\" to keystroke {tab} using {command down}"]
@@ -64,9 +64,10 @@
                     5 (refresh! "5")
                     6 (refresh! "6")
                     7 (refresh! "7")
-                    8 (unglitch!)
-                    16 (refresh! "8")
-                    17 (refresh! "9")
+                    8 (refresh! "8")
+                    9 (refresh! "9")
+                    10 (refresh! "10")
+                    16 (unglitch!)
                     (refresh!)))))
             ::keyboard-handler))
 

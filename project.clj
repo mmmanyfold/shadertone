@@ -12,7 +12,6 @@
   ;; add per WARNING: JVM argument TieredStopAtLevel=1 is active...
   :jvm-opts ^:replace []
   ;; add leipzig for use in examples
-  :profiles {:dev {:dependencies [[leipzig "0.6.0" :exclusions [[overtone]]]]
+  :profiles {:dev {:dependencies [[leipzig "0.6.0" :exclusions [[overtone]]]]}})
                    ;; enabling this outputs a lot of spew. disable for normal runs
                    ;; :global-vars {*warn-on-reflection* true *assert* false}
-                   }})
