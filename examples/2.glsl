@@ -9,11 +9,11 @@ const float ga = 5.0 / 3.0 * 2.0 * PI;
 const float ba = 2.0 / 3.0 * 2.0 * PI;
 
 // all of these can be played with
-const float scale = 18.0;
+const float scale = 15.0;
 const float tscale = 7.0;
 const float xpixels = 3.0;
 const float ypixels = 3.0;
-const int symmetry = 13;
+const int symmetry = 5;
 
 // tap into Overtone's volume
 uniform float iOvertoneVolume;
@@ -34,9 +34,9 @@ float wave(vec2 p, float th)
     t *= 2.0 * PI;
     float sth = sin(th);
     float cth = cos(th);
-    float w = (cos (cth*p.x + sth*p.y + t) + 1.0) / 2.0;
+    float w = (cos (cth*p.y + sth*p.x + t) + 1.0) / 2.0;
     // make the waves higher @ higher volumes
-    w *= clamp(10.0*iOvertoneVolume, 0.1, 2.0);
+    w *= clamp(50.0*iOvertoneVolume, 0.25, 2.0);
     return w;
 }
 
@@ -56,24 +56,24 @@ void main(void)
     float s = 0.0;
     vec4 c;
 
-    s = combine(vec2(vUV.x*xpixels, vUV.y*ypixels));
+    s = combine(vec2(vUV.y*xpixels, vUV.x*ypixels));
 
      // clut select
-     if(s<=0.25) {
+     if(s<=0.15) {
          c = mix( vec4( 58.0/255.0,117.0/255.0, 78.0/255.0, 0.0),
 		  vec4(175.0/255.0,207.0/255.0, 93.0/255.0, 0.0),
                   s*4.0 );
      } else if(s<=0.5) {
-         c = mix( vec4(175.0/255.0,207.0/255.0, 93.0/255.0, 0.0),
-                  vec4(255.0/255.0,232.0/255.0,135.0/255.0, 0.0),
+         c = mix( vec4(200.0/255.0,207.0/255.0, 193.0/255.0, 0.0),
+                  vec4(215.0/255.0,232.0/255.0,135.0/255.0, 0.0),
                   s*4.0-1.0 );
      } else if(s<=0.75) {
-         c = mix( vec4(255.0/255.0,232.0/255.0,135.0/255.0, 0.0),
+         c = mix( vec4(100.0/255.0,232.0/255.0,135.0/255.0, 0.0),
                   vec4(194.0/255.0,138.0/255.0, 79.0/255.0, 0.0),
                   s*4.0-2.0 );
      } else {
-         c = mix( vec4(194.0/255.0,138.0/255.0, 79.0/255.0, 0.0),
-                  vec4(145.0/255.0, 70.0/255.0, 56.0/255.0, 0.0),
+         c = mix( vec4(124.0/255.0,220.0/255.0,125.0/255.0, 0.0),
+                  vec4(145.0/255.0, 170.0/255.0, 256.0/255.0, 0.0),
                   s*4.0-3.0 );
      }
 

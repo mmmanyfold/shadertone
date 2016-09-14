@@ -64,10 +64,9 @@
                     5 (refresh! "5")
                     6 (refresh! "6")
                     7 (refresh! "7")
-                    8 (refresh! "8")
-                    9 (refresh! "9")
-                    10 (refresh! "10")
-                    16 (unglitch!)
+                    8 (unglitch!)
+                    16 (refresh! "8")
+                    17 (refresh! "9")
                     (refresh!)))))
             ::keyboard-handler))
 

@@ -56,12 +56,12 @@
                                    [0.0 0.0 0.0 0.0]))
                             (.flip))
    :channel-res-buffer (-> (BufferUtils/createFloatBuffer (* 3 4))
-                            (.put (float-array
-                                   [0.0 0.0 0.0
-                                    0.0 0.0 0.0
-                                    0.0 0.0 0.0
-                                    0.0 0.0 0.0]))
-                            (.flip))
+                           (.put (float-array
+                                  [0.0 0.0 0.0
+                                   0.0 0.0 0.0
+                                   0.0 0.0 0.0
+                                   0.0 0.0 0.0]))
+                           (.flip))
    ;; textures
    :tex-filenames       []
    :tex-ids             []
@@ -74,8 +74,8 @@
    :pixel-read-pos-y    0
    :pixel-read-data      (-> (BufferUtils/createByteBuffer 3)
                             (.put (byte-array (map byte [0 0 0])))
-                            (.flip))
-   })
+                            (.flip))})
+
 
 ;; GLOBAL STATE ATOMS
 ;; Tried to get rid of this atom, but LWJGL is limited to only
@@ -284,8 +284,8 @@
             i-channel3-loc        (GL20/glGetUniformLocation pgm-id "iChannel3")
             i-channel-res-loc     (GL20/glGetUniformLocation pgm-id "iChannelResolution")
             i-date-loc            (GL20/glGetUniformLocation pgm-id "iDate")
-            _ (except-gl-errors "@ end of let init-shaders")
-            ]
+            _ (except-gl-errors "@ end of let init-shaders")]
+
         (swap! locals
                assoc
                :shader-good true
@@ -383,59 +383,59 @@
   "load, bind texture from filename.  returns a texture info vector
    [tex-id width height z].  returns nil tex-id if filename is nil"
   ([^String filename]
-     (let [tex-id (GL11/glGenTextures)]
-       (if (cubemap-filename? filename)
-         (do
-           (dotimes [i 6]
-             (load-texture (cubemap-filename filename i)
-                           GL13/GL_TEXTURE_CUBE_MAP tex-id i))
-           [tex-id 0.0 0.0 0.0]) ;; cubemaps don't update w/h
-         (load-texture filename GL11/GL_TEXTURE_2D tex-id 0))))
+   (let [tex-id (GL11/glGenTextures)]
+     (if (cubemap-filename? filename)
+       (do
+         (dotimes [i 6]
+           (load-texture (cubemap-filename filename i)
+                         GL13/GL_TEXTURE_CUBE_MAP tex-id i))
+         [tex-id 0.0 0.0 0.0]) ;; cubemaps don't update w/h
+       (load-texture filename GL11/GL_TEXTURE_2D tex-id 0))))
   ([^String filename ^Integer target ^Integer tex-id ^Integer i]
-     (if (string? filename)
+   (if (string? filename)
        ;; load from file
-       (let [_                (println "Loading texture:" filename)
-             image            (ImageIO/read (FileInputStream. filename))
-             image-bytes      (tex-image-bytes image)
-             internal-format  (tex-internal-format image)
-             format           (tex-format image)
-             nbytes           (* image-bytes (.getWidth image) (.getHeight image))
-             buffer           ^ByteBuffer (-> (BufferUtils/createByteBuffer nbytes)
-                                              (put-texture-data image (= image-bytes 4))
-                                              (.flip))
-             tex-image-target ^Integer (if (= target GL13/GL_TEXTURE_CUBE_MAP)
-                                         (+ i GL13/GL_TEXTURE_CUBE_MAP_POSITIVE_X)
-                                         target)]
+     (let [_                (println "Loading texture:" filename)
+           image            (ImageIO/read (FileInputStream. filename))
+           image-bytes      (tex-image-bytes image)
+           internal-format  (tex-internal-format image)
+           format           (tex-format image)
+           nbytes           (* image-bytes (.getWidth image) (.getHeight image))
+           buffer           ^ByteBuffer (-> (BufferUtils/createByteBuffer nbytes)
+                                            (put-texture-data image (= image-bytes 4))
+                                            (.flip))
+           tex-image-target ^Integer (if (= target GL13/GL_TEXTURE_CUBE_MAP)
+                                       (+ i GL13/GL_TEXTURE_CUBE_MAP_POSITIVE_X)
+                                       target)]
+       (GL11/glBindTexture target tex-id)
+       (GL11/glTexParameteri target GL11/GL_TEXTURE_MAG_FILTER GL11/GL_LINEAR)
+       (GL11/glTexParameteri target GL11/GL_TEXTURE_MIN_FILTER GL11/GL_LINEAR)
+       (if (== target GL11/GL_TEXTURE_2D)
+         (do
+           (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_S GL11/GL_REPEAT)
+           (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_T GL11/GL_REPEAT))
+         (do ;; CUBE_MAP
+           (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_S GL12/GL_CLAMP_TO_EDGE)
+           (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_T GL12/GL_CLAMP_TO_EDGE)))
+       (GL11/glTexImage2D ^Integer tex-image-target 0 ^Integer internal-format
+                          ^Integer (.getWidth image)  ^Integer (.getHeight image) 0
+                          ^Integer format
+                          GL11/GL_UNSIGNED_BYTE
+                          ^ByteBuffer buffer)
+       (except-gl-errors "@ end of load-texture if-stmt")
+       [tex-id (.getWidth image) (.getHeight image) 1.0])
+     (if (= filename :previous-frame)
+       (do ;; :previous-frame initial setup
+         (println "setting up :previous-frame texture")
          (GL11/glBindTexture target tex-id)
          (GL11/glTexParameteri target GL11/GL_TEXTURE_MAG_FILTER GL11/GL_LINEAR)
          (GL11/glTexParameteri target GL11/GL_TEXTURE_MIN_FILTER GL11/GL_LINEAR)
-         (if (== target GL11/GL_TEXTURE_2D)
-           (do
-             (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_S GL11/GL_REPEAT)
-             (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_T GL11/GL_REPEAT))
-           (do ;; CUBE_MAP
-             (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_S GL12/GL_CLAMP_TO_EDGE)
-             (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_T GL12/GL_CLAMP_TO_EDGE)))
-         (GL11/glTexImage2D ^Integer tex-image-target 0 ^Integer internal-format
-                            ^Integer (.getWidth image)  ^Integer (.getHeight image) 0
-                            ^Integer format
-                            GL11/GL_UNSIGNED_BYTE
-                            ^ByteBuffer buffer)
-         (except-gl-errors "@ end of load-texture if-stmt")
-         [tex-id (.getWidth image) (.getHeight image) 1.0])
-       (if (= filename :previous-frame)
-         (do ;; :previous-frame initial setup
-           (println "setting up :previous-frame texture")
-           (GL11/glBindTexture target tex-id)
-           (GL11/glTexParameteri target GL11/GL_TEXTURE_MAG_FILTER GL11/GL_LINEAR)
-           (GL11/glTexParameteri target GL11/GL_TEXTURE_MIN_FILTER GL11/GL_LINEAR)
-           (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_S GL12/GL_CLAMP_TO_EDGE)
-           (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_T GL12/GL_CLAMP_TO_EDGE)
-           (except-gl-errors "@ end of load-texture else-stmt")
+         (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_S GL12/GL_CLAMP_TO_EDGE)
+         (GL11/glTexParameteri target GL11/GL_TEXTURE_WRAP_T GL12/GL_CLAMP_TO_EDGE)
+         (except-gl-errors "@ end of load-texture else-stmt")
            ;; use negative as flag to indicate using window width, height
-           [tex-id -1.0 -1.0 1.0])
+         [tex-id -1.0 -1.0 1.0])
          ;; else must be nil texture
-         [nil 0.0 0.0 0.0]))))
+       [nil 0.0 0.0 0.0]))))
 
 (defn- init-textures
   [locals]
@@ -451,8 +451,8 @@
         ;; update channel-res-buffer
         _         (-> ^FloatBuffer (:channel-res-buffer @locals)
                       (.put ^floats (float-array tex-whd))
-                      (.flip))
-        ]
+                      (.flip))]
+
     (swap! locals assoc
            :tex-ids tex-ids)))
 
@@ -841,8 +841,8 @@
     :post-draw
     nil ;; nothing to do
     :destroy
-    nil ;; nothing to do
-    ))
+    nil)) ;; nothing to do
+
 
 ;; Public API ===================================================
 
@@ -856,7 +856,7 @@
                 res-b       (* (.getWidth b)
                                (.getHeight b))
                 bit-depth-a (.getBitsPerPixel a)
-                bit-depth-b (.getBitsPerPixel b) ]
+                bit-depth-b (.getBitsPerPixel b)]
             (if (= res-a res-b)
               (> bit-depth-a bit-depth-b)
               (> res-a res-b))))
@@ -970,9 +970,9 @@
           textures        [nil]
           user-data       {}
           user-fn         shader-default-fn}}]
-     (let [mode (Display/getDisplayMode)]
-       (undecorate-display!)
-       (start-shader-display mode shader-filename-or-str-atom textures "" false user-data user-fn display-sync-hz)))
+  (let [mode (Display/getDisplayMode)]
+    (undecorate-display!)
+    (start-shader-display mode shader-filename-or-str-atom textures "" false user-data user-fn display-sync-hz)))
 
 (defn throw-exceptions-on-gl-errors!
   "When v is true, throw exceptions when glGetError() returns

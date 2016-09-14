@@ -8,6 +8,7 @@
 // http://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm
 
 float PI = 3.14159265;
+uniform float iOvertoneVolume;
 
 vec2 obj_union(in vec2 obj0, in vec2 obj1)
 {
@@ -46,8 +47,8 @@ vec2 distance_to_obj(in vec3 p)
         obj_union(
             obj_floor(
                 p,
-                vec3(0,1,0),  // select
-                vec3(0,-10,0),  // center
+                vec3(0.1,(iOvertoneVolume*2),0.2),  // select
+                vec3(0,-20,0),  // center
                 0),           // obj id
             obj_sphere(
                 p,
@@ -63,22 +64,22 @@ vec3 floor_color(in vec3 p)
     //return vec3(0.3,0,0);
     if (fract(p.x*0.2)>0.2) {
         if (fract(p.z*0.2)>0.2) {
-            return vec3(0,0.1,0.2);
+            return vec3(0.0,0.1,0.2);
         } else {
-            return vec3(1,1,1);
+            return vec3(1.0,0.0,5.5);
         }
     } else {
         if (fract(p.z*.2)>.2) {
-            return vec3(1,1,1);
+            return vec3(0.2,1.1,1.1);
         } else {
-            return vec3(0.3,0,0);
+            return vec3(0.5,2.0,0.5);
         }
     }
 }
 
 vec3 prim_color(in vec3 p)
 {
-    return vec3(0.0,0.3,0.3);
+    return vec3(1.0,1.1,1.3);
 }
 
 vec3 obj_normal(vec3 p, float distance)
