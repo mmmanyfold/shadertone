@@ -27,7 +27,7 @@ void main(void)
     float v1x = uv.y + cos(2.0*iGlobalTime + 5.5*uv.x)*v3;
     float v2x = uv.x + 0.0 + sin(1.2*iGlobalTime + 1.5*uv.y)*v2;
     float v3x = uv.x - 0.25 + cos(3.1*iGlobalTime + 5.2*uv.y)*v3;
-    col += vec3(5.0,5.0,0.0) * abs(0.066/v1x) * v3;
+    col += vec3(0.0,5.0,0.0) * abs(0.066/v1x) * v3;
     col += vec3(5.0,0.0,0.0) * abs(0.066/v2x) * v2;
     col += vec3(0.0,0.0,3.0) * abs(0.066/v3x) * v1;
 

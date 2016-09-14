@@ -47,7 +47,8 @@ vec2 distance_to_obj(in vec3 p)
         obj_union(
             obj_floor(
                 p,
-                vec3(0.1,(iOvertoneVolume*2),0.2),  // select
+                /*(iOvertoneVolume*2)*/
+                vec3(0.1,1,0.2),  // select
                 vec3(0,-20,0),  // center
                 0),           // obj id
             obj_sphere(

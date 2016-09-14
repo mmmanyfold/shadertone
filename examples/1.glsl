@@ -4,7 +4,7 @@ void main(void)
 {
       // * MORE HUE/SATURATION: vec3(down)
 
-    vec3  c      = vec3(0.4);
+    vec3  c      = vec3(0.5);
     float act    = abs(cos(iGlobalTime));
     vec2  uv     = gl_FragCoord.xy/iResolution.xy;
     float aspect = iResolution.x / iResolution.y;
@@ -26,7 +26,7 @@ void main(void)
 
           // * MORE QUIVER: vec3(up)
 
-        c += (vec3(1.0,0.05*(1.0-act),0.1*(act)) *
+        c += (vec3(0.2,0.75*(1.0-act),0.1*(act)) *
               vec3(min(1.0,pow(r,20.0)*0.75*iOvertoneVolume)));
         c += (vec3(-15.0*act,0.5,1.5*act) *
               vec3(max(0.0,4.0*pow(0.5*t0+0.3,0.5)*(1.0-r)-1.5)));
